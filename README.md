@@ -1,3 +1,30 @@
+I needed to call iperf3 (3.7) from java (apk) via ProcessBuilder.
+In android 8 (and probably in 7) $TMPDIR = /data/local/tmp. This code did not work for me. I just commented too much for the test iperf_api.c:
+
+char template[1024];
+//if (test->tmp_template) {
+// snprintf(template, sizeof(template) / sizeof(char), "%s", test->tmp_template);
+//} else {
+// //find the system temporary dir unix, windows, cygwin support
+//char tempdir = getenv("TMPDIR");
+// if (tempdir == 0){
+// tempdir = getenv("TEMP");
+// }
+// if (tempdir == 0){
+// tempdir = getenv("TMP");
+// }
+// if (tempdir == 0){
+char* tempdir = "/data/data/iperf.proj/cache";
+// }
+snprintf(template, sizeof(template) / sizeof(char), "%s/iperf3.XXXXXX", tempdir);
+//}
+
+where "iperf.proj" - name of my app.
+I suspect that you can also specify the application directory "/data/data/iperf.proj", not "cache" folder
+
+
+
+
 # android-iperf
 
 [![Build Status](https://travis-ci.com/KnightWhoSayNi/android-iperf.svg?branch=master)](https://travis-ci.com/KnightWhoSayNi/android-iperf) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/KnightWhoSayNi/android-iperf/blob/master/LICENSE)
